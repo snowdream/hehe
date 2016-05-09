@@ -1,11 +1,13 @@
 var express = require('express');
 var path = require('path');
-var fs = require('fs')
+var fs = require('fs');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
+var session = require('express-session');
+var RedisStore = require('connect-redis')(session);
 var bodyParser = require('body-parser');
-var FileStreamRotator = require('file-stream-rotator')
+var FileStreamRotator = require('file-stream-rotator');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -20,6 +22,20 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
+app.use(session({
+    secret: '&ilovexsh&',
+    cookie: {maxAge: 60 * 60 * 24 },
+    resave: false,
+    saveUninitialized: true,
+    store: new RedisStore({
+        host: 'localhost',
+        port: 6379,
+        ttl:  60 * 60 * 24
+    })
+}));
+
+
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 if (app.get('env') === 'development') {
@@ -31,9 +47,9 @@ if (app.get('env') === 'development') {
     app.locals.pretty = false;
 
     //log config for morgan
-    var logDirectory = __dirname + '/log'
+    var logDirectory = __dirname + '/log';
     // ensure log directory exists
-    fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory)
+    fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
     // create a rotating write stream
     var accessLogStream = FileStreamRotator.getStream({
         date_format: 'YYYYMMDD',
