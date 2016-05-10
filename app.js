@@ -8,6 +8,7 @@ var session = require('express-session');
 var RedisStore = require('connect-redis')(session);
 var bodyParser = require('body-parser');
 var FileStreamRotator = require('file-stream-rotator');
+var db = require('./config/db');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -24,16 +25,15 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(session({
     secret: '&ilovexsh&',
-    cookie: {maxAge: 60 * 60 * 24 },
+    cookie: {maxAge: 60 * 60 * 24},
     resave: false,
     saveUninitialized: true,
     store: new RedisStore({
         host: 'localhost',
         port: 6379,
-        ttl:  60 * 60 * 24
+        ttl: 60 * 60 * 24
     })
 }));
-
 
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -60,10 +60,16 @@ if (app.get('env') === 'development') {
 
     // setup the logger
     app.use(logger('combined', {stream: accessLogStream}))
-
-
 }
 
+//catch mongodb error
+app.use(function(req, res, next) {
+    if (db.connection.readyState != 1) {
+        var err = new Error('Failed to connect to mongodb!');
+        err.status = 500;
+        next(err);
+    }
+});
 
 app.use('/', routes);
 app.use('/users', users);
