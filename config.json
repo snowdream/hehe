@@ -1,0 +1,10 @@
+{
+  "cookieSecret": "IeZi4vu7lY3d3ny1dIhzNqFCwOQNa3Hg",
+  "db": {
+    "host": "localhost",
+    "port": "27017",
+    "name": "hehe",
+    "username": "snowdream",
+    "password": "123456"
+  }
+}

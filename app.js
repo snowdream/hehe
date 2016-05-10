@@ -68,6 +68,8 @@ app.use(function(req, res, next) {
         var err = new Error('Failed to connect to mongodb!');
         err.status = 500;
         next(err);
+    }else{
+        next();
     }
 });
 
