@@ -73,6 +73,18 @@ app.use(function(req, res, next) {
     }
 });
 
+//catch redis error
+app.use(function (req, res, next) {
+    if (!req.session) {
+        var err = new Error('Failed to connect to redis!');
+        err.status = 500;
+        next(err);
+    }else{
+        next();
+    }
+});
+
+
 app.use('/', routes);
 app.use('/users', users);
 
