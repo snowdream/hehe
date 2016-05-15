@@ -5,6 +5,8 @@ var nconf = require('./config');
 
 var dbURI = 'mongodb://'+nconf.get('db:host')+':'+nconf.get('db:port')+'/'+nconf.get('db:name');
 
+console.log(dbURI);
+
 // Create the database connection
 //see: http://stackoverflow.com/a/26164828
 var connectWithRetry = function() {
