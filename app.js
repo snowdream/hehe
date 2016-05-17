@@ -30,8 +30,7 @@ app.use(session({
     saveUninitialized: true,
     store: new RedisStore({
         host: 'localhost',
-        port: 6379,
-        ttl: 60 * 60 * 24
+        port: 6379
     })
 }));
 
