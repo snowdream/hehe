@@ -11,7 +11,7 @@ router.get('/', function (req, res, next) {
     var accept = accepts(req);
 
     // the order of this list is significant; should be server preferred order
-    switch (accept.type(['json', 'html'])) {
+    switch (accept.type([ 'html','json'])) {
         case 'json':
             res.json({"title": "Express", "content": "Welcome to Express","times":n});
             break;

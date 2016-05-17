@@ -21,5 +21,9 @@
     "nconf": "^0.8.4",
     "randomstring": "^1.1.4",
     "serve-favicon": "~2.3.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-mocha": "^2.2.0"
   }
 }
