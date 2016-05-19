@@ -25,12 +25,13 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(session({
     secret: '&ilovexsh&',
-    cookie: {maxAge: 60 * 60 * 24},
+    cookie: { path: '/', httpOnly: true, secure: false, maxAge: 60 * 60 * 24},
     resave: false,
     saveUninitialized: true,
     store: new RedisStore({
         host: 'localhost',
-        port: 6379
+        port: 6379,
+        disableTTL:true
     })
 }));
 
